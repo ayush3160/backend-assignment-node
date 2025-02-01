@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import connectDB from "./config/db";
 import FaqRoutes from "./routes/FaqRoutes";
+import authRouter from "./routes/AuthRoutes";
 import { connectRedis } from "./config/redisDb";
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api", FaqRoutes);
+app.use("/api/auth", authRouter);
 
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello, TypeScript with Express!");
