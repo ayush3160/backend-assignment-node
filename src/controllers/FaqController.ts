@@ -1,9 +1,10 @@
 import Faq from "../models/Faq";
 import { Request, Response } from "express";
+import { redisClient } from "../config/redisDb";
 
 async function getFaqs(req: Request, res: Response) {
     try {
-        const lang = req.query.lang as string;
+        const lang = req.query.lang as string || "en";
         const faqs = await Faq.find();
 
         const translatedFaqs = faqs.map((faq) => {
@@ -16,6 +17,8 @@ async function getFaqs(req: Request, res: Response) {
                 answer,
             }
         });
+
+        await redisClient.setEx(`faqs_${lang}`, 600, JSON.stringify(translatedFaqs));
 
         res.json(translatedFaqs);
     } catch (error) {

@@ -1,12 +1,14 @@
 import express, { Request, Response } from "express";
 import connectDB from "./config/db";
 import FaqRoutes from "./routes/FaqRoutes";
+import { connectRedis } from "./config/redisDb";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Connect Database
+// Connect Databases
 connectDB();
+connectRedis();
 
 // Middleware
 app.use(express.json());
